@@ -2,86 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Chapter.Command
+
+public class BikeController : MonoBehaviour
 {
-    public class ToggleTurbo : Command
+    public enum Direction
     {
-        private BikeController _controller;
+        left = -1,
+        right = 1
+    }
 
-        public ToggleTurbo (BikeController controller)
+    private bool _isTurboOn;
+    private float _distance = 1.0f;
+
+    public void ToggleTurbo()
+    {
+        _isTurboOn = !_isTurboOn;
+        Debug.Log("Turbo Active: " + _isTurboOn.ToString());
+    }
+
+    public void Turn(Direction direction)
+    {
+        if (direction == Direction.left)
         {
-            _controller = controller;
+            transform.Translate(Vector3.left * _distance);
         }
-
-        public override void Execute()
+        if (direction == Direction.right)
         {
-            _controller.ToggleTurbo();
+            transform.Translate(Vector3.right * _distance);
         }
     }
 
-    public class TurnLeft : Command
+    public void ResetPosition()
     {
-        private BikeController _controller;
-
-        public TurnLeft (BikeController controller)
-        {
-            _controller = controller;
-        }
-
-        public override void Execute()
-        {
-            _controller.Turn(BikeController.Direction.Left);
-        }
+        transform.position = new Vector3(0.0f, 0.0f, 0.0f);
     }
 
-    public class TurnRight : Command
-    {
-        private BikeController _controller;
-
-        public TurnRight(BikeController controller)
-        {
-            _controller = controller;
-        }
-
-        public override void Execute()
-        {
-            _controller.Turn(BikeController.Direction.Right);
-        }
-    }
-
-    public class BikeController : MonoBehaviour
-    {
-        public enum Direction
-        {
-            left = -1,
-            Right = 1
-        }
-
-        private bool _isTurboOn;
-        private float _distance = 1.0f;
-
-        public void ToggleTurbo()
-        {
-            _isTurboOn = !_isTurboOn;
-            Debug.Log("Turbo Active: " + _isTurboOn.ToString());
-        }
-
-        public void Turn(Direction direction)
-        {
-            if (direction == Direction.left)
-            {
-                transform.Translate(Vector3.Left * _distance);
-            }
-            if (direction == Direction.right)
-            {
-                transform.Translate(Vector3.right * _distance);
-            }
-        }
-
-        public void ResetPosition()
-        {
-            transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-        }
-
-    }
 }
+
